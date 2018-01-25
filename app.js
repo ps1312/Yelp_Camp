@@ -9,6 +9,7 @@ var expressSession = require("express-session");
 var User = require("./models/user");
 var methodOverride = require("method-override");
 var flash = require("connect-flash");
+var geocoder = require("geocoder");
 
 populateDB();
 
@@ -28,7 +29,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/role_camp", {useMongoClient: true});
+mongoose.connect(process.env.DATABASEURL, {useMongoClient: true});
 app.use(methodOverride("_method"));
 
 app.use(passport.initialize());
