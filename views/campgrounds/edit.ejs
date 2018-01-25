@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+
+<div class="container">
+  
+  <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+    <input class="form-control" type="text" name="name" value="<%= campground.name %>">
+    <input class="form-control" type="text" name="img" value="<%= campground.img %>">
+    <input class="form-control" type="text" name="description" value="<%= campground.description %>">
+    <input class="form-control" type="text" name="price" value=<%= campground.price %>>
+    <input class="form-control" type="text" name="location" value=<%= campground.location %>>
+    <button class="btn btn-lrg btn-default" type="submit"> Update campground </button>
+  </form>
+
+</div>
+
+<% include ../partials/footer %>

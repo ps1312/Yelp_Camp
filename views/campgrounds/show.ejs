@@ -1,0 +1,90 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    <p class="lead">RoleCamp</p>
+    <div id="map"></div>
+    </div>
+    <div class="col-md-9">
+      <div class="thumbnail">
+        <img class="centered img-responsive" src="<%= campground.img %>">
+        <div class="caption-full">
+          <h4 class="pull-right">$ <%= campground.price %> per night</h4>
+          <h2> <%= campground.name %> </h2>
+          <h3> Created by <%= campground.creator_username %></h3>
+          <p> <%= campground.description %> </p>
+          <p> Location: <%= campground.location %> </p>
+          <% if (currentUser && currentUser.username === campground.creator_username) { %>
+            <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger form-control">Delete</button>
+            </form>
+            <form action="/campgrounds/<%= campground._id %>/edit" method="GET">
+              <button type="submit" class="btn btn-warning form-control">Edit</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+      <div class="well">
+        <% campground.comments.forEach(function(comment){ %>
+          <div class="media">
+            <div class="media-body">
+              <h4 class="media-heading"><strong><%= comment.username %></strong> <small><i> Posted on <%= comment.postedAt %></i></small> </h4>
+              <p> <%= comment.content %> <p>
+              <% if (currentUser && currentUser.username === comment.username) { %>
+                <form id="inline-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+                <button id="edit_comment" class="btn btn-warning">Edit</button>
+                <form id="edit_field" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit?_method=PUT" method="POST">
+                  <input type="text" name="comment[content]" placeholder="add new comment here">
+                  <button type="submit" id="edit_comment" class="btn btn-success">Edit</button>
+                </form>
+              <% } %>
+              <hr>
+            </div>
+          </div>
+        <% }); %>
+        <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+          <div class="form-group">
+            <input type="text" class="form-control" name="comment[content]" placeholder="add comment here">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-success form-control" type="submit">add comment to <%= campground.name %></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initMap() {
+    var lat = <%= campground.lat %>;
+    var lng = <%= campground.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= campground.name %><br />
+      <%= campground.location %></strong>
+      <p><%= campground.description %></p>
+    `
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCU3IKHTzrNg-xhkpRfzxO_k4e0ZSyl5sU&callback=initMap"></script>
+
+<% include ../partials/footer %>
