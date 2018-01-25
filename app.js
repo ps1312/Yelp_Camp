@@ -14,7 +14,7 @@ var geocoder = require("geocoder");
 populateDB();
 
 app.use(expressSession({
-  secret: "string code to unhash",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
