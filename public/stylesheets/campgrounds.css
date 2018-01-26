@@ -10,6 +10,14 @@
   padding: 0 10px;
 }
 
+.navbar-inverse .navbar-brand {
+  color: white;
+}
+
+.nav.navbar-nav.navbar-right li a {
+  color: white;
+}
+
 #edit_field {
   display: none;
 }
