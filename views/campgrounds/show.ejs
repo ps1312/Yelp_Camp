@@ -32,13 +32,20 @@
               <h4 class="media-heading"><strong><%= comment.username %></strong> <small><i> Posted <%= moment(comment.createdAt).fromNow() %></i></small> </h4>
               <p> <%= comment.content %> <p>
               <% if (currentUser && currentUser.username === comment.username) { %>
-                <form id="inline-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-warning" data-toggle="collapse" data-target="#collapseEdit<%= comment._id %>">Edit</button>
+                <div class="collapse" id="collapseEdit<%= comment._id %>">
+                  <div class="well" style="border-left: 5px solid #ffbb33; margin-top: 15px;">
+                    <h4>Edit your comment <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></h4>
+                      <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit?_method=PUT" method="POST">
+                        <p>
+                          <textarea class="form-control" name="comment[content]" placeholder="Your comment text..."  rows="5" cols="70"><%= comment.text %></textarea>
+                        </p>
+                        <button class="btn btn-warning" type="submit" id="edit_comment" class="btn btn-success">Edit</button>
+                      </form>
+                  </div>
+                </div>
+                <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
                   <button class="btn btn-danger" type="submit">Delete</button>
-                </form>
-                <button id="edit_comment" class="btn btn-warning">Edit</button>
-                <form id="edit_field" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit?_method=PUT" method="POST">
-                  <input type="text" name="comment[content]" placeholder="add new comment here">
-                  <button type="submit" id="edit_comment" class="btn btn-success">Edit</button>
                 </form>
               <% } %>
               <hr>
