@@ -4,12 +4,6 @@ var Campground = require("../models/campground");
 var Comment = require("../models/comment");
 var middlewareObj = require("../middleware");
 
-/*
-/photos/:id/edit	GET	edit
-/photos/:id	PATCH/PUT	update
-/campgrounds/:id/comments"
-*/
-
 //Create comment
 router.post("/", middlewareObj.isLoggedIn, function(req, res) {
   Campground.findById(req.params.id, function(error, campground_found){
