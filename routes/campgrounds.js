@@ -1,20 +1,36 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
-var passport = require("passport");
 var middlewareObj = require("../middleware");
 var geocoder = require("geocoder");
 
 //Index
 router.get("/", function(req, res){
-  Campground.find(function(error, camps){
-    if (error){
-      console.log("Error finding camps");
-    } else {
-      console.log("Camps found with success");
-      res.render("campgrounds/campgrounds", {campgrounds: camps});
-    }
-  });
+  if (req.query.search_input){
+    var regex = new RegExp(escapeRegex(req.query.search_input));
+    Campground.find({name: regex}, function(error, camps){
+      if (error){
+        console.log("Error finding camps");
+      } else {
+        if (camps.length < 1) {
+          req.flash("error", "Sorry, no campgrounds found, try again.")
+          res.redirect("/campgrounds");
+        } else {
+          console.log("Camps found with success");
+          res.render("campgrounds/campgrounds", {campgrounds: camps});
+        }
+      }
+    });
+  } else {
+    Campground.find(function(error, camps){
+      if (error){
+        console.log("Error finding camps");
+      } else {
+        console.log("Camps found with success");
+        res.render("campgrounds/campgrounds", {campgrounds: camps});
+      }
+    });
+  }
 });
 
 //New
@@ -42,16 +58,21 @@ router.post("/", middlewareObj.isLoggedIn, function(req, res){
   var creator = req.user._id;
   var creator_username = req.user.username;
   var price = req.body.price;
-  geocoder.geocode(req.body.location, function (error, data) {
+  geocoder.geocode(req.body.location, function (error, locationData) {
     if (error) {
       console.log(error);
       req.flash("error", "Something went wrong on your location");
       res.redirect("/campgrounds");
     } else {
-      var lat = data.results[0].geometry.location.lat;
-      var lng = data.results[0].geometry.location.lng;
-      var location = data.results[0].formatted_address;
-      console.log(location);
+      if (locationData.error_message){
+        var lat = 0;
+        var lng = 0;
+        var location = req.body.location;
+      } else {
+        lat = locationData.results[0].geometry.location.lat;
+        lng = locationData.results[0].geometry.location.lng;
+        location = locationData.results[0].formatted_address;
+      }
       var newCamp = {name: name, img: img, description: desc, price: price, creator:creator, location: location, lat: lat, lng: lng, creator_username: creator_username};
       Campground.create(newCamp, function(error, created_campground) {
         if (error) {
@@ -86,6 +107,15 @@ router.put("/:camp_id", middlewareObj.checkCampgroundOwner, function(req, res){
       req.flash("error", "Something went wrong on your location");
       res.redirect("/campgrounds");
     } else {
+      if (locationData.error_message){
+        var lat = 0;
+        var lng = 0;
+        var location = req.body.location;
+      } else {
+        lat = locationData.results[0].geometry.location.lat;
+        lng = locationData.results[0].geometry.location.lng;
+        location = locationData.results[0].formatted_address;
+      }
       var lat = locationData.results[0].geometry.location.lat;
       var lng = locationData.results[0].geometry.location.lng;
       var location = locationData.results[0].formatted_address;
@@ -113,5 +143,8 @@ router.delete("/:camp_id", middlewareObj.isLoggedIn, middlewareObj.checkCampgrou
   });
 });
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
