@@ -1,6 +1,6 @@
 # role_camp
 
-Simple Node.JS RESTful application created along with Udemy course "The Web Developer Bootcamp" with a few changes. For database MongoDB is used localy for development and with MLab for production.
+Simple Node.JS RESTful application created along with Udemy course "The Web Developer Bootcamp" with a few changes. For deveopment, MongoDB is used localy and for production is used MLab.
 
 ---
 # Setup
@@ -17,3 +17,5 @@ heroku config:set SESSION_SECRET=whatever string
 heroku config:set GOOGLEAPIKEY=your google api key
 ```
 or go to your heroku app page and set them on Config Vars in Settings.
+
+Visit at https://role-camp.herokuapp.com/
