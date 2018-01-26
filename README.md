@@ -17,3 +17,5 @@ heroku config:set SESSION_SECRET=whatever string
 heroku config:set GOOGLEAPIKEY=your google api key
 ```
 or go to your heroku app page and set them on Config Vars in Settings.
+
+Visit at https://role-camp.herokuapp.com/
