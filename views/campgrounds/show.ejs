@@ -12,7 +12,7 @@
         <div class="caption-full">
           <h4 class="pull-right">$ <%= campground.price %> per night</h4>
           <h2> <%= campground.name %> </h2>
-          <h3> Created by <%= campground.creator_username %></h3>
+          <h3> Created by <%= campground.creator_username %> <%= moment(campground.createdAt).fromNow() %></h3>
           <p> <%= campground.description %> </p>
           <p> Location: <%= campground.location %> </p>
           <% if (currentUser && currentUser.username === campground.creator_username) { %>
@@ -29,7 +29,7 @@
         <% campground.comments.forEach(function(comment){ %>
           <div class="media">
             <div class="media-body">
-              <h4 class="media-heading"><strong><%= comment.username %></strong> <small><i> Posted on <%= comment.postedAt %></i></small> </h4>
+              <h4 class="media-heading"><strong><%= comment.username %></strong> <small><i> Posted <%= moment(comment.createdAt).fromNow() %></i></small> </h4>
               <p> <%= comment.content %> <p>
               <% if (currentUser && currentUser.username === comment.username) { %>
                 <form id="inline-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">

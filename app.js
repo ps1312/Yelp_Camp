@@ -9,7 +9,6 @@ var expressSession = require("express-session");
 var User = require("./models/user");
 var methodOverride = require("method-override");
 var flash = require("connect-flash");
-var geocoder = require("geocoder");
 
 populateDB();
 
@@ -46,6 +45,7 @@ app.use(function(req, res, next){
   res.locals.success = req.flash("success");
   next();
 });
+app.locals.moment = require('moment');
 
 app.use("/campgrounds", campgroundsRoutes);
 app.use("/campgrounds/:id/comments", commentsRoutes);
