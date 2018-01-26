@@ -22,9 +22,7 @@ router.post("/", middlewareObj.isLoggedIn, function(req, res) {
         } else {
           created_comment.author = req.user._id;
           created_comment.username = req.user.username;
-          var aDate = new Date();
-          aDate.setTime(Date.now());
-          created_comment.postedAt = aDate.toTimeString();
+          created_comment.createdAt = Date.now();
           created_comment.save();
           campground_found.comments.push(created_comment);
           campground_found.save();
