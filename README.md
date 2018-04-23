@@ -1,4 +1,4 @@
-# role_camp
+# Yelp_Camp
 
 Simple Node.JS RESTful application created along with Udemy course "The Web Developer Bootcamp" with a few changes. For deveopment, MongoDB is used localy and for production is used MLab.
 
