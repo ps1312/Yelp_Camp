@@ -1,5 +1,0 @@
-{
-    "SESSION_SECRET": "session_secret_here",
-    "DBURL": "mongodb://p_sergio:12345678@ds215388.mlab.com:15388/role_camp",
-    "test": "mongodb://paulo_s:12345678@ds045694.mlab.com:45694/role_camp_testdb"
-}
