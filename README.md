@@ -16,10 +16,8 @@ and export a config.json file with:
     "test": "test db url"
 }
 ```
-and you're good to go. If you plan to deploy this app on Heroku you need to set environment variables there too. Just write these commands on the command line:
+and you're good to go. If you plan to deploy this app on Heroku you need to set environment variable there too. Just write this command on the command line, make sure you have a config.json with the values above:
 ```
-heroku config:set DATABASEURL=mongodb://<dbuser>:<dbpassword>@ds215388.mlab.com:15388/role_camp
-heroku config:set SESSION_SECRET=whatever string
 heroku config:set GOOGLEAPIKEY=your google api key
 ```
 or go to your heroku app page and set them on Config Vars in Settings.
