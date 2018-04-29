@@ -9,11 +9,20 @@ var expressSession = require("express-session");
 var User = require("./models/user");
 var methodOverride = require("method-override");
 var flash = require("connect-flash");
+var config = require("./config/default.json");
 
-populateDB();
+//Qual banco sera usado
+var dbEnv = process.env.NODE_ENV;
+if (dbEnv === undefined) {
+  var dbUrl = config["DBURL"];
+} else {
+  var dbUrl = config[dbEnv];  
+}
+
+//populateDB();
 
 app.use(expressSession({
-  secret: process.env.SESSION_SECRET,
+  secret: config.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -28,7 +37,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DATABASEURL, {useMongoClient: true});
+mongoose.connect(dbUrl, {useMongoClient: true});
 app.use(methodOverride("_method"));
 
 app.use(passport.initialize());
@@ -54,6 +63,8 @@ app.get("*", function(req, res){
   res.redirect("/");
 });
 
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(8000, function(){
   console.log("Server started");
 });
+
+module.exports = app;
