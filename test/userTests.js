@@ -43,6 +43,7 @@ describe("User routes", function(){
         .type("form")
         .send({"username": "test_user", "password": "999999"})
         .end(function(err, res){
+            expect(res.redirects[0]).to.contain('/login');
             expect(res.text).to.contain("Please login.");
             done();
         });
@@ -55,8 +56,8 @@ describe("User routes", function(){
         .type("form")
         .send({"username": "test_user", "password": "123456"})
         .end(function(err, res){
+            expect(res.redirects[0]).to.contain('/campgrounds');
             expect(res.text).to.contain("Welcome To RoleCamp!");
-            //res.redirects[0].should.contain('/auth/status');
             done();
         });
     });
@@ -66,7 +67,8 @@ describe("User routes", function(){
         .request(server)
         .get("/logout")
         .end(function(err, res){
-            expect(res.text).to.contain("Please login.");
+            expect(res.redirects[0]).to.contain('/login');            
+            expect(res.text).to.contain("Please login.");           
             done();
         });
     });
