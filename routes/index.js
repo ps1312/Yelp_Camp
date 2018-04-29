@@ -18,6 +18,7 @@ router.get("/login", function(req, res) {
 router.post("/register", function(req, res){
   User.register(new User({username: req.body.username}), req.body.password, function(error, created_user){
     if (error) {
+      console.log(error.message);
       req.flash("error", error.message);
       return res.redirect("/register");
     } else {
@@ -31,7 +32,7 @@ router.post("/register", function(req, res){
 
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/campgrounds",
-  failureRedirect: "/campgrounds",
+  failureRedirect: "/login",
   failureFlash : true,
   successFlash : true
 }), function(req, res){
@@ -40,7 +41,7 @@ router.post("/login", passport.authenticate("local", {
 router.get("/logout", function(req, res) {
     req.logout();
     req.flash("success", "Logged out with success");
-    res.redirect("/campgrounds");
+    res.redirect("/login");
 });
 
 module.exports = router;
