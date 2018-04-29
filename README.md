@@ -4,11 +4,17 @@ Simple Node.JS RESTful application created along with Udemy course "The Web Deve
 
 ---
 # Setup
-To run this app, simply set these environment variables:
+To run this app, simply set these environment variable:
 ```
-export DATABASEURL=mongodb://localhost/role_camp
-export SESSION_SECRET=whatever string
 export GOOGLEAPIKEY=your google api key
+```
+and export a config.json file with:
+```
+{
+    "SESSION_SECRET": "session_secret_here",
+    "DBURL": "production db url",
+    "test": "test db url"
+}
 ```
 and you're good to go. If you plan to deploy this app on Heroku you need to set environment variables there too. Just write these commands on the command line:
 ```
